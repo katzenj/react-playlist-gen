@@ -1,0 +1,81 @@
+.input_group {
+  height: 40px;
+  left: 50%;
+  margin: 16px 0;
+  position: relative;
+  transform: translate(-50%);
+  width: 400px;
+}
+
+.label {
+  box-sizing: border-box;
+  border: none;
+  border-bottom: solid 2px #0fa3b1;
+  border-right: none;
+  border-bottom-left-radius: 2px;
+  float: left;
+  font-size: 14px;
+  height: 100%;
+  padding: 8px;
+  padding-top: 10px;
+  text-align: center;
+  width: 30%;
+}
+
+.input {
+  border: none;
+  border-bottom: solid 2px #0fa3b1;
+  border-bottom-right-radius: 2px;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 100%;
+  padding-left: 8px;
+  position: absolute;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: black;
+  font-size: 14px;
+}
+
+.button_container {
+  margin: 32px 0;
+}
+
+.button {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  background: #0fa3b1;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  height: 100%;
+  text-decoration: none;
+  transition: background 250ms ease-in-out,
+  transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+}
+
+.button:hover,
+.button:focus {
+  background: #0b7781;
+}
+
+.button:focus {
+  outline: 1px solid #fff;
+  outline-offset: -4px;
+}
+
+.button:active {
+  transform: scale(0.99);
+}
+
+.button:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
