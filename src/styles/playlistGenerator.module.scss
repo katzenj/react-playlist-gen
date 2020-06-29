@@ -8,14 +8,15 @@ body, input {
   padding: 0;
 }
 
-.content_container {
+.content-container {
   left: 50%;
-  top: 15%;
   position: absolute;
+  top: 15%;
   transform: translate(-50%);
+  width: 60%;
 }
 
-.embed_container {
+.embed-container {
   text-align: center;
   width: 1000px;
 }
@@ -28,14 +29,23 @@ body, input {
   color: #f7a072;
 }
 
-.spinner_container {
+.spinner-container {
   margin-top: 64px;
   text-align: center;
 }
 
-.spotify_embed {
+.spotify-embed {
   background: #282828;
   border-radius: 10px;
   margin: 0 8px 60px 8px;
   transition: opacity 0.125s;
+}
+
+.playlists-input-container {
+  margin-bottom: 16px;
+}
+
+.sliders-container {
+  display: table;
+  width: 100%;
 }

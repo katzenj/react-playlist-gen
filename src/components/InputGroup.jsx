@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import PropTypes from 'prop-types';
-import styles from 'src/components/main.css?module';
+import styles from 'src/styles/input.module.scss';
 
 export const InputGroup = ({ name, placeholder, onChange }) => (
-  <div className={styles.input_group} id={`${name}-container`}>
+  <div className={styles.inputGroup} id={`${name}-container`}>
     <input
       className={styles.input}
       type="text"

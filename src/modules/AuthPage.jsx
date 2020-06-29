@@ -1,7 +1,8 @@
 import { h } from 'preact';
 import { Button } from 'src/components/Button';
 import { AuthSingleton } from 'src/utils/auth';
-import styles from 'src/modules/main.css?module';
+
+import styles from 'src/styles/auth.module.scss';
 
 export const AuthPage = () => {
   const cookie = 'test_cookie_1';
@@ -21,7 +22,7 @@ export const AuthPage = () => {
 
   return (
     <div>
-      <div className={styles.content_container}>
+      <div className={styles.contentContainer}>
         <h1 className={styles.header}>Generate a Playlist!</h1>
         <Button
           buttonText="Authorize Spotify"

@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Router from 'preact-router';
 
 import { AuthPage } from 'src/modules/AuthPage';
 import { GeneratorPage } from 'src/modules/GeneratorPage';
@@ -7,8 +7,8 @@ import { GeneratorPage } from 'src/modules/GeneratorPage';
 const App = () => {
   return (
     <Router>
-      <Route exact path="/" component={AuthPage} />
-      <Route path="/spotify_callback" component={GeneratorPage} />
+      <AuthPage path = "/" />
+      <GeneratorPage path = "/spotify_callback" />
     </Router>
   );
 };

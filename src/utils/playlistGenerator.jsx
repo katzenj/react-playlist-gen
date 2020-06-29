@@ -8,6 +8,10 @@ class PlaylistGenerator {
     this.spotifyUserId = process.env.SPOTIFY_USER_ID;
   }
 
+  buildUrl(params) {
+    return `${SPOTIFY_BASE_URL}/${params}`;
+  }
+
   async createPlaylist(title) {
     const playlistUrl = `${SPOTIFY_BASE_URL}/users/${this.spotifyUserId}/playlists`;
     const response = await fetch(playlistUrl, {
@@ -30,32 +34,41 @@ class PlaylistGenerator {
   }
 
   async getSongsForArtist(artistId) {
-    const artistTracksUrl = `${SPOTIFY_BASE_URL}/artists/${artistId}/top-tracks?country=US`
+    const artistTracksUrl = this.buildUrl(`artists/${artistId}/top-tracks?country=US`);
     const response = await fetch(artistTracksUrl, {method: 'GET', headers: AuthSingleton.getAuthHeaders()});
     const responseJson = await response.json();
 
-    return responseJson['tracks'].map((track) => track['uri']).slice(0, TRACKS_TO_PULL);
+    return responseJson['tracks'].map((track) => ({uri: track['uri'], id: track['id']})).slice(0, TRACKS_TO_PULL);
   }
 
   async getRecommendedTracksForArtist(artistIds) {
-    const recommendationsUrl = `${SPOTIFY_BASE_URL}/recommendations?seed_artists=${artistIds.join(',')}&market=US`
+    const recommendationsUrl = this.buildUrl(`recommendations?seed_artists=${artistIds.join(',')}&market=US`)
     const response = await fetch(recommendationsUrl, {method: 'GET', headers: AuthSingleton.getAuthHeaders()});
     const responseJson = await response.json();
 
     return responseJson['tracks'].map((track) => track['uri']);
   }
 
+  async getAudioFeaturesForTracks(trackIds) {
+    const audioFeaturesUrl = this.buildUrl(`audio-features/?ids=${trackIds.slice(1,25).join(',')}`)
+    const response = await fetch(audioFeaturesUrl, {method: 'GET', headers: AuthSingleton.getAuthHeaders()});
+    const responseJson = await response.json();
+    console.log(responseJson);
+  }
+
   async addSongsToPlaylist(playlistId, artists) {
-    const playlistUrl = `${SPOTIFY_BASE_URL}/playlists/${playlistId}/tracks`;
+    const playlistUrl = this.buildUrl(`playlists/${playlistId}/tracks`)
     const songUris = [];
     const artistIds = [];
+    const songIds = [];
   
     for (const artist of artists) {
       const artistId = await this.getArtist(artist);
       artistIds.push(artistId);
       
       const songsForArtist = await this.getSongsForArtist(artistId);
-      songUris.push(songsForArtist);
+      songUris.push(songsForArtist.map((data) => data.uri));
+      songIds.push(songsForArtist.map((data) => data.id));
     }
 
     const recommended = await this.getRecommendedTracksForArtist(artistIds);

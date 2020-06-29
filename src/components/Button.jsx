@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import { h } from 'preact';
 import PropTypes from 'prop-types';
 
-import styles from 'src/components/main.css?module';
+import styles from 'src/styles/button.module.scss';
+import inputStyles from 'src/styles/input.module.scss';
 
 export const Button = ({ buttonText, onClick, disabled }) => (
-  <div className={classNames({ [styles.input_group]: true, [styles.button_container]: true })}>
+  <div className={classNames({ [inputStyles.inputGroup]: true, [styles.buttonContainer]: true })}>
     <button
       disabled={disabled}
       className={styles.button}
