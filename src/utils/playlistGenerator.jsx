@@ -41,8 +41,21 @@ class PlaylistGenerator {
     return responseJson['tracks'].map((track) => ({uri: track['uri'], id: track['id']})).slice(0, TRACKS_TO_PULL);
   }
 
-  async getRecommendedTracksForArtist(artistIds) {
-    const recommendationsUrl = this.buildUrl(`recommendations?seed_artists=${artistIds.join(',')}&market=US`)
+  async getSong(song) {
+    const formattedSong = encodeURIComponent(song.trim());
+    const songUrl = this.buildUrl(`/search?q=${formattedSong}&type=track`);
+    const response = await fetch(songUrl, {method: 'GET', headers: AuthSingleton.getAuthHeaders()});
+    const responseJson = await response.json();
+    return responseJson;
+  }
+
+  async getRecommendedTracks(artistIds, targetValues) {
+    let recommendationsUrl = this.buildUrl(`recommendations?seed_artists=${artistIds.join(',')}&market=US`)
+
+    Object.entries(targetValues).forEach((entry) => {
+      recommendationsUrl += `&target_${entry[0]}=${entry[1]}`
+    });
+
     const response = await fetch(recommendationsUrl, {method: 'GET', headers: AuthSingleton.getAuthHeaders()});
     const responseJson = await response.json();
 
@@ -56,7 +69,7 @@ class PlaylistGenerator {
     console.log(responseJson);
   }
 
-  async addSongsToPlaylist(playlistId, artists) {
+  async addSongsToPlaylist(playlistId, artists, targetValues) {
     const playlistUrl = this.buildUrl(`playlists/${playlistId}/tracks`)
     const songUris = [];
     const artistIds = [];
@@ -71,7 +84,10 @@ class PlaylistGenerator {
       songIds.push(songsForArtist.map((data) => data.id));
     }
 
-    const recommended = await this.getRecommendedTracksForArtist(artistIds);
+    const features = await this.getAudioFeaturesForTracks(songIds.flat())
+    console.log(features);
+
+    const recommended = await this.getRecommendedTracks(artistIds, targetValues);
     songUris.push(recommended);
 
     fetch(playlistUrl, {

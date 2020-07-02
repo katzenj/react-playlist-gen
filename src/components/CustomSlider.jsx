@@ -36,9 +36,9 @@ export const CustomSlider = ({ label, setValue }) => {
   return (
     <div className={styles.sliderContainer}>
       <PrettySlider 
-        max={10} 
-        step={0.1} 
-        defaultValue={5} 
+        max={1} 
+        step={0.01} 
+        defaultValue={0.5} 
         valueLabelDisplay="auto" 
         onChange={(_, value) => {
           setValue(value)

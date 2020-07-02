@@ -17,12 +17,12 @@ import styles from 'src/styles/playlistGenerator.module.scss';
 export const GeneratorPage = () => {
   const [playlistTitle, setPlaylistTitle] = useState(null);
   const [artists, setArtists] = useState(null);
-  const [songs, setSongs] = useState(null);
   const [playlistData, setPlaylistData] = useState({ userId: null, playlistIds: [] });
   const [isLoading, setIsLoading] = useState(false);
 
-  const [danceability, setDanceability] = useState(5)
-  const [energy, setEnergy] = useState(5)
+  const [danceability, setDanceability] = useState(0.5)
+  const [acousticness, setAcousticness] = useState(0.5)
+  const [energy, setEnergy] = useState(0.5)
 
   const getUrlParameter = (name) => {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -36,7 +36,14 @@ export const GeneratorPage = () => {
     const playlistIds = playlistData.playlistIds;
     playlistIds.push(playlistId);
     const artists = createPlaylistData.artists.split(',').map((artist) => artist.trim());
-    PlaylistGeneratorSingleton.addSongsToPlaylist(playlistId, artists);
+
+    const targetValues = {
+      danceability,
+      acousticness,
+      energy
+    };
+
+    PlaylistGeneratorSingleton.addSongsToPlaylist(playlistId, artists, targetValues);
 
     setPlaylistData({userId, playlistIds});
     setIsLoading(false);
@@ -75,19 +82,15 @@ export const GeneratorPage = () => {
               placeholder="Artists"
               onChange={setArtists}
             />
-            <InputGroup
-              name="songs"
-              placeholder="Songs"
-              onChange={setSongs}
-            />
             <div className={styles.slidersContainer}>
               <CustomSlider label="Danceability 🕺" setValue={setDanceability} />
+              <CustomSlider label="Acousticness 🎸" setValue={setAcousticness} />
               <CustomSlider label="Energy ⚡️" setValue={setEnergy} />
             </div>
             <Button
               buttonText="Create a Playlist"
               disabled={artists === null || artists === ""}
-              onClick={() => createPlaylist({ playlistTitle, artists, songs })}
+              onClick={() => createPlaylist({ playlistTitle, artists })}
             />
           </div>
         )}
